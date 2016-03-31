@@ -42,6 +42,7 @@
 				<div class="controls">
 					<input id="cliente.cpf" name="cliente.cpf" type="text"
 						placeholder="CPF do cliente" class="input-xlarge" required=""
+						pattern="\d{3}\.\d{3}\.\d{3}-\d{2}"
 						value="${cliente.cpf}">
 				</div>
 			</div>
@@ -69,6 +70,7 @@
 				<div class="controls">
 					<input id="cliente.cep" name="cliente.cep" type="text"
 						placeholder="CEP do Cliente" class="input-xlarge" required=""
+						pattern="[0-9]{5}-[0-9]{3}"
 						value="${cliente.cep}">
 				</div>
 			</div>

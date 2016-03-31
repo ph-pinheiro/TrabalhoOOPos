@@ -28,9 +28,6 @@
 				<th>Nome</th>
 				<th>CPF</th>
 				<th>Crédito</th>
-				<th>Rua</th>
-				<th>CEP</th>
-				<th>Cidade</th>
 				<th>Dependentes</th>
 				<th>Data Cadastro</th>
 				<th style="width: 5%">Editar</th>
@@ -45,9 +42,6 @@
 							<td>${cliente.nome}</td>
 							<td>${cliente.cpf}</td>
 							<td>${cliente.credito}</td>
-							<td>${cliente.rua}</td>
-							<td>${cliente.cep}</td>
-							<td>${cliente.cidade}</td>
 							<td>${fn:length(cliente.dependentes)} - <a
 								href='<c:url value="listDeps"><c:param name="id" value="${cliente.id}" /></c:url>'>
 								Editar</a></td>

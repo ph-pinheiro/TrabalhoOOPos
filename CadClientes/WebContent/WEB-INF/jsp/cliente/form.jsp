@@ -38,8 +38,7 @@
 					<input id="cliente.cep" name="cliente.cpf" type="text"
 						placeholder="CPF com formato: xxx.xxx.xxx-xx" 
 						class="input-xlarge" required=""
-						pattern="\d{3}\.\d{3}\.\d{3}-\d{2}"
-						x-moz-errormesage="Utilize o formato completo com pontos e traço.">
+						pattern="\d{3}\.\d{3}\.\d{3}-\d{2}">
 				</div>
 			</div>
 
@@ -63,7 +62,9 @@
 				<label class="control-label" for="cliente.cep">CEP</label>
 				<div class="controls">
 					<input id="cliente.cep" name="cliente.cep" type="text"
-						placeholder="CEP do end do Cliente" class="input-xlarge" required="">
+						placeholder="xxxxx-xxx-" class="input-xlarge"
+						pattern="[0-9]{5}-[0-9]{3}"
+						 required="">
 				</div>
 			</div>
 			
@@ -72,15 +73,6 @@
 				<div class="controls">
 					<input id="cliente.cidade" name="cliente.cidade" type="text"
 						placeholder="Cidade do end do Cliente" class="input-xlarge" required="">
-				</div>
-			</div>
-
-			<!-- Text input-->
-			<div class="control-group">
-				<label class="control-label" for="cliente.telefone">Telefone</label>
-				<div class="controls">
-					<input id="cliente.telefone" name="cliente.telefone" type="text"
-						placeholder="(xxx) xxxxx-xxxx" class="input-medium" required="">
 				</div>
 			</div>
 		</fieldset>
