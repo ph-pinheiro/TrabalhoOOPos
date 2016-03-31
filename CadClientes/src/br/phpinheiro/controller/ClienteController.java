@@ -15,6 +15,7 @@ import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.view.Results;
 import br.phpinheiro.facade.ClienteDAOFacade;
+import br.phpinheiro.facade.DependenteDAOFacade;
 import br.phpinheiro.model.Cliente;
 import br.phpinheiro.model.Dependente;
 
@@ -33,10 +34,12 @@ public class ClienteController {
 
 	private Result result;
 	private ClienteDAOFacade clienteFacade;
+	private DependenteDAOFacade dependenteFacade;
 
-	public ClienteController(Result result, ClienteDAOFacade facade) {
+	public ClienteController(Result result, ClienteDAOFacade facadeCliente, DependenteDAOFacade facadeDependente) {
 		this.result = result;
-		this.clienteFacade = facade;
+		this.clienteFacade = facadeCliente;
+		this.dependenteFacade = facadeDependente;
 	}
 
 	@Path("/")
@@ -96,12 +99,14 @@ public class ClienteController {
 	}
 
 	@Path("/salvar-cliente")
-	public void salvarCliente(Cliente cliente) {
+	public void salvarCliente(Cliente cliente, Dependente dependente0, Dependente dependente1) {
 		try {
 			//objeto temporário para manter a data de cadastro
 			Cliente clienteTemp = clienteFacade.lerPeloId(cliente.getId());
 			cliente.setDataCadastro(clienteTemp.getDataCadastro());
 			if(this.verificaCreditoMinimo(cliente)){
+				cliente = verificaDependentes(cliente, dependente0, dependente1);
+				excluirDependentes(cliente, dependente0, dependente1);
 				clienteFacade.atualizarCliente(cliente);
 			} else{
 				this.result.include("erroMsg", "Crédito do Cliente inferior ao limite");
@@ -114,6 +119,28 @@ public class ClienteController {
 		}
 		this.result.include("msg", "Cliente Atualizado com sucesso");
 		this.result.redirectTo(this).list();
+	}
+
+	private void excluirDependentes(Cliente cliente, Dependente dependente0, Dependente dependente1) {
+		
+		if (dependente0.getNome().isEmpty()){
+			if(dependente0.getId() > 1){
+				try {
+					dependenteFacade.excluirDependente(dependente0.getId());
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		if (dependente1.getNome().isEmpty()){
+			if(dependente1.getId() > 1){
+				try {
+					dependenteFacade.excluirDependente(dependente1.getId());
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 
 	@Path("/excluir")
@@ -190,6 +217,7 @@ public class ClienteController {
 			
 		List<Dependente> dependentes = new ArrayList<Dependente>();
 		
+		
 		if(dependente1.getNome() != ""){
 			dependente1.setParente(cliente);
 			dependentes.add(dependente1);
@@ -201,6 +229,7 @@ public class ClienteController {
 		}
 		
 		if(dependentes.size() != 0){
+			
 			cliente.setDependentes(dependentes);
 		}
 		

@@ -90,13 +90,62 @@
 						value="${cliente.dataCadastro}">
 				</div>
 			</div>
-
+			
+		</fieldset>
+		<fieldset>
+			<legend>
+				<h3>Dependentes</h3>
+			</legend>
+			<c:if test="${fn:length(cliente.dependentes) gt 0}">
+   				<c:forEach items="${cliente.dependentes}" var="dependente" varStatus="loop">
+   					
+   					<input id="dependente${loop.index}.id" name="dependente${loop.index}.id" type="hidden"
+						value="${dependente.id}">
+   					
+   					<div class="control-group">
+						<label class="control-label" for="dependente${loop.index}.nome">Nome do Dependente</label>
+						<div class="controls">
+						<input id="dependente${loop.index}.nome" name="dependente${loop.index}.nome" type="text"
+							placeholder="Nome do Dependente" class="input-medium"
+							value="${dependente.nome} ">
+						</div>
+					</div>
+   				</c:forEach>
+			</c:if>
+			<c:if test="${fn:length(cliente.dependentes) == 0}">
+				<div class="control-group">
+				<label class="control-label" for="dependente0.nome">Nome do Dependente</label>
+				<div class="controls">
+					<input id="dependente0.nome" name="dependente0.nome" type="text"
+						placeholder="Nome do Dependente" class="input-medium">
+				</div>
+			</div>
+				<div class="control-group">
+				<label class="control-label" for="dependente1.nome">Nome do Dependente</label>
+				<div class="controls">
+					<input id="dependente1.nome" name="dependente1.nome" type="text"
+						placeholder="Nome do Dependente" class="input-medium">
+				</div>
+			</div>
+			</c:if>
+			<c:if test="${fn:length(cliente.dependentes) == 1}">
+				<div class="control-group">
+				<label class="control-label" for="dependente1.nome">Nome do Dependente</label>
+				<div class="controls">
+					<input id="dependente1.nome" name="dependente1.nome" type="text"
+						placeholder="Nome do Dependente" class="input-medium">
+				</div>
+			</div>
+			</c:if>
+			
+			
+		</fieldset>
 			<div class="form-actions">
 				<div class="pull-right">
 					<button type="submit" class="btn btn-primary">Salvar</button>
 				</div>
 			</div>
-		</fieldset>
+		
 	</form>
 </div>
 
