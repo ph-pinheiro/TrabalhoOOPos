@@ -57,7 +57,6 @@ public class ClienteController {
 			} else{
 				if(this.verificaCreditoMinimo(cliente)){
 					try {
-						cliente = this.verificaDependentes(cliente, dependente1, dependente2);
 						clienteFacade.adicionarCliente(this.salvarDataAtual(cliente));
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
@@ -105,14 +104,12 @@ public class ClienteController {
 			Cliente clienteTemp = clienteFacade.lerPeloId(cliente.getId());
 			cliente.setDataCadastro(clienteTemp.getDataCadastro());
 			if(this.verificaCreditoMinimo(cliente)){
-				cliente = verificaDependentes(cliente, dependente0, dependente1);
 				clienteFacade.atualizarCliente(cliente);
 			} else{
 				this.result.include("erroMsg", "Crédito do Cliente inferior ao limite");
 				this.result.redirectTo(this).editForm(cliente.getId());
 				return;
 			}
-			//clienteFacade.atualizarCliente(cliente);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -238,30 +235,5 @@ public class ClienteController {
 		} else{
 			return false;
 		}
-	}
-	
-	private Cliente verificaDependentes(Cliente cliente, Dependente dependente1, 
-										Dependente dependente2){
-			
-		List<Dependente> dependentes = new ArrayList<Dependente>();
-		
-		
-		if(dependente1.getNome() != ""){
-			dependente1.setParente(cliente);
-			dependentes.add(dependente1);
-		}
-		
-		if(dependente2.getNome() != ""){
-			dependente2.setParente(cliente);
-			dependentes.add(dependente2);
-		}
-		
-		if(dependentes.size() != 0){
-			
-			cliente.setDependentes(dependentes);
-		}
-		
-		return cliente;
-		
 	}
 }

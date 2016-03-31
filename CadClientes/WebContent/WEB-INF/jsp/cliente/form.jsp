@@ -84,25 +84,6 @@
 				</div>
 			</div>
 		</fieldset>
-		<fieldset>
-			<legend>
-				<h3>Dependentes</h3>
-			</legend>
-			<div class="control-group">
-				<label class="control-label" for="dependente1.nome">Nome do Dependente</label>
-				<div class="controls">
-					<input id="dependente1.nome" name="dependente1.nome" type="text"
-						placeholder="Nome do Dependente" class="input-medium">
-				</div>
-			</div>
-			<div class="control-group">
-				<label class="control-label" for="dependente2.nome">Nome do Dependente</label>
-				<div class="controls">
-					<input id="dependente2.nome" name="dependente2.nome" type="text"
-						placeholder="Nome do Dependente" class="input-medium">
-				</div>
-			</div>
-		</fieldset>
 		<div class="form-actions">
 			<div class="pull-right">
 				<button type="submit" class="btn btn-primary">Adicionar</button>
