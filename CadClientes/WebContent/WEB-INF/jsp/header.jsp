@@ -36,7 +36,7 @@
 					</ul>
 					<ul class="nav pull-right">
 						<li class="divider-vertical"></li>
-						<li><a href="https://github.com/elyssonmr/trab-oo-pos.git">repo</a></li>
+						<li><a href="https://github.com/ph-pinheiro/TrabalhoOOPos.git">repo</a></li>
 					</ul>
 				</div>
 			</div>
