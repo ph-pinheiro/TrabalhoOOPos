@@ -106,41 +106,18 @@ public class ClienteController {
 			cliente.setDataCadastro(clienteTemp.getDataCadastro());
 			if(this.verificaCreditoMinimo(cliente)){
 				cliente = verificaDependentes(cliente, dependente0, dependente1);
-				excluirDependentes(cliente, dependente0, dependente1);
 				clienteFacade.atualizarCliente(cliente);
 			} else{
 				this.result.include("erroMsg", "Crédito do Cliente inferior ao limite");
 				this.result.redirectTo(this).editForm(cliente.getId());
 				return;
 			}
-			clienteFacade.atualizarCliente(cliente);
+			//clienteFacade.atualizarCliente(cliente);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		this.result.include("msg", "Cliente Atualizado com sucesso");
 		this.result.redirectTo(this).list();
-	}
-
-	private void excluirDependentes(Cliente cliente, Dependente dependente0, Dependente dependente1) {
-		
-		if (dependente0.getNome().isEmpty()){
-			if(dependente0.getId() > 1){
-				try {
-					dependenteFacade.excluirDependente(dependente0.getId());
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		if (dependente1.getNome().isEmpty()){
-			if(dependente1.getId() > 1){
-				try {
-					dependenteFacade.excluirDependente(dependente1.getId());
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-		}
 	}
 
 	@Path("/excluir")
@@ -173,8 +150,59 @@ public class ClienteController {
 		result.use(Results.page()).forwardTo("WEB-INF/jsp/cliente/list.jsp");
 	}
 	
-	@Path("/outra-action")
-	public void outraAction() {
+	@Path("/listDeps")
+	public Cliente listDeps(Long id) {
+		Cliente cliente = new Cliente();
+		try {
+			cliente = clienteFacade.lerPeloId(id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return cliente;
+	}
+	
+	@Path("/excluirDeps")
+	public void excluirDeps(Long idDependente, Long idCliente) {
+
+		try {
+			dependenteFacade.excluirDependente(idDependente);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		this.result.include("msg", "Dependente Excluido com sucesso");
+		this.result.redirectTo(this).listDeps(idCliente);
+	}
+	
+	@Path("/editDep")
+	public Dependente editDep(Long idDependente) {
+
+		Dependente dependente = new Dependente();
+		try {
+			dependente = dependenteFacade.lerPeloId(idDependente);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return dependente;
+	}
+	
+	@Path("/salvar-dependente")
+	public void salvarDependente(Dependente dependente, Cliente cliente) {
+		
+		if(dependente.getNome().isEmpty()){
+			this.result.include("Erromsg", "ERRO: O Dependente precisa ter o nome preenchido");
+			this.result.redirectTo(this).editDep(dependente.getId());
+		} else{
+			try {
+				dependente.setParente(cliente);
+				dependenteFacade.atualizarDependente(dependente);
+				
+				this.result.include("msg", "Dependente Atualizado com sucesso");
+				this.result.redirectTo(this).listDeps(cliente.getId());
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+			
 	}
 	
 	

@@ -7,7 +7,7 @@
 
 <jsp:include page="/WEB-INF/jsp/header.jsp" />
 
-<h2>Lista dos Clientes</h2>
+<h2>Controle de Dependentes</h2>
 
 <c:if test="${not empty msg}">
 	<div class="alert alert-success">
@@ -17,57 +17,89 @@
 </c:if>
 
 <div id="listagem">
-	<form class="form-search well well-small" method="post" action='<c:url value="buscar"/>'>
-		<input name="search" id="search" type="text" class="input-medium search-query" placeholder="Termo da busca">
-		<button type="submit" class="btn">Buscar</button>
-	</form>
+	
+	<h3>Dados do Cliente</h3>
+	<p><strong>Nome:</strong> ${cliente.nome}</p>
+	<p><strong>CPF:</strong> ${cliente.cpf}</p>
+	<p><strong>Crédito do Cliente:</strong> ${cliente.credito}</p>
+	<p><strong>Rua do Endereço:</strong> ${cliente.rua}</p>
+	<p><strong>CEP do Cliente:</strong> ${cliente.cep}</p>
+	<p><strong>Cidade do Cliente:</strong> ${cliente.cidade}</p>
+	
+	<hr/>
+	
+	<h3>Dependentes</h3>
 	
 	<table class="table table-bordered table-hover table-striped">
 		<thead>
 			<tr>
-				<th>Nome</th>
-				<th>CPF</th>
-				<th>Crédito</th>
-				<th>Rua</th>
-				<th>CEP</th>
-				<th>Cidade</th>
 				<th>Dependentes</th>
-				<th>Data Cadastro</th>
 				<th style="width: 5%">Editar</th>
 				<th style="width: 5%">Excluir</th>
 			</tr>
 		</thead>
 		<tbody>
 			<c:choose>
-				<c:when test="${fn:length(clienteList) gt 0}">
-					<c:forEach items="${clienteList}" var="cliente">
+				<c:when test="${fn:length(cliente.dependentes) gt 0}">
+					<c:forEach items="${cliente.dependentes}" var="dependente">
 						<tr>
-							<td>${cliente.nome}</td>
-							<td>${cliente.cpf}</td>
-							<td>${cliente.credito}</td>
-							<td>${cliente.rua}</td>
-							<td>${cliente.cep}</td>
-							<td>${cliente.cidade}</td>
-							<td>${fn:length(cliente.dependentes)} - <a
-								href='<c:url value="listDeps"><c:param name="id" value="${cliente.id}" /></c:url>'>
-								Editar</a></td>
-							<td>${cliente.dataCadastro}</td>
+							<td>${dependente.nome}</td>
 							<td><a class="btn btn-warning"
-								href='<c:url value="editar"><c:param name="id" value="${cliente.id}" /></c:url>'>
+								href='<c:url value="editDep"><c:param name="idDependente" value="${dependente.id}" />
+								<c:param name="idCliente" value="${cliente.id}" /></c:url>'>
 								<i class="icon-edit"></i></a></td>
 							<td><a class="btn btn-danger delete-btn"
-							     href='<c:url value="excluir"><c:param name="id" value="${cliente.id}" /></c:url>'> 
+							     href='<c:url value="excluirDeps"><c:param name="idDependente" value="${dependente.id}" />
+							     <c:param name="idCliente" value="${cliente.id}" /></c:url>'> 
 							       <i class="icon-remove"></i></a></td>
 						</tr>
 					</c:forEach>
 				</c:when>
 				<c:otherwise>
-					<td colspan="6" style="text-align: center;">Nenhum Cliente
+					<td colspan="6" style="text-align: center;">Nenhum Dependente
 						Cadastrado</td>
 				</c:otherwise>
 			</c:choose>
 		</tbody>
 	</table>
+	
+	<c:if test="${fn:length(cliente.dependentes) < 2}">
+		<form class="form-horizontal" method="post" action='<c:url value="salvar-dependente"/>'>
+			<fieldset>
+				
+				<input id="cliente.id" name="cliente.id" type="hidden"
+				value="${cliente.id}">
+				
+				<div class="control-group">
+				<label class="control-label" for="dependente.nome">Nome</label>
+				<div class="controls">
+					<input id="dependente.nome" name="dependente.nome" type="text"
+						placeholder="Nome do dependente" class="input-xlarge" required="">
+					<button type="submit" class="btn btn-primary">Adicionar</button>
+				</div>
+			</div>
+			</fieldset>
+		</form>
+	</c:if>
+	<c:if test="${fn:length(cliente.dependentes) < 1}">
+		<form class="form-horizontal" method="post" action='<c:url value="salvar-dependente"/>'>
+			<fieldset>
+				
+				<input id="cliente.id" name="cliente.id" type="hidden"
+				value="${cliente.id}">
+				
+				<div class="control-group">
+				<label class="control-label" for="dependente.nome">Nome</label>
+				<div class="controls">
+					<input id="dependente.nome" name="dependente.nome" type="text"
+						placeholder="Nome do dependente" class="input-xlarge" required="">
+					<button type="submit" class="btn btn-primary">Adicionar</button>
+				</div>
+			</div>
+			</fieldset>
+		</form>
+	</c:if>
+	
 </div>
 
 <!-- TODO: Verificar problema na janela de confirmação de exclusão (id não passa pra janela) -->
